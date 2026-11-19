@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIDE Campo Offline — OlacDev</title>
+  <style>
+    :root { --bg: #f8fafc; --card: #fff; --text: #0f172a; --muted: #475569; --primary: #0f766e; --border: #cbd5e1; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    main { max-width: 780px; margin: 0 auto; padding: 24px 16px 48px; }
+    input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; margin-bottom: 12px; }
+    button { background: var(--primary); color: #fff; border: 0; padding: 12px 18px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 16px; }
+    footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border); }
+    footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>FIDE Campo Offline</h1>
+    <p>Coleta offline de danos humanos e habitacionais (FIDE/COBRADE) para equipes de Defesa Civil em campo.</p>
+    <input id="mun" type="text" value="Governador Valadares - MG" aria-label="Município" />
+    <input id="ppl" type="number" min="0" value="45" aria-label="Pessoas afetadas" />
+    <input id="homes" type="number" min="0" value="12" aria-label="Moradias danificadas" />
+    <button id="save" type="button">Gerar Registro FIDE</button>
+    <section id="out" aria-live="polite"></section>
+  </main>
+  <footer>Made by <a href="https://olacdev.com/" target="_blank" rel="noopener noreferrer">OlacDev</a></footer>
+  <script type="module">
+    import { buildFideRecord } from './app.js';
+    document.getElementById('save').addEventListener('click', () => {
+      const rec = buildFideRecord({
+        municipality: document.getElementById('mun').value,
+        affectedPeople: document.getElementById('ppl').value,
+        damagedHomes: document.getElementById('homes').value
+      });
+      document.getElementById('out').innerHTML = `<div class="card"><pre>${JSON.stringify(rec, null, 2)}</pre></div>`;
+    });
+  </script>
+</body>
+</html>
